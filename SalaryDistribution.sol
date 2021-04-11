@@ -56,21 +56,18 @@ contract salaryDistribution {
     function deleteAccount(address _account) public isControlAccount  returns(bool){
         
         delete(employeeAccount[_account]);
-        
         return true;
     }
     
     function disableAccountWithdraw(address _account) public isControlAccount returns(bool) {
         
         employeeAccount[_account].accoutStatus = Status.disable;
-        
         return true;
     }
     
     function enableAccountWithdraw(address _account) public isControlAccount returns(bool) {
         
         employeeAccount[_account].accoutStatus = Status.enable;
-        
         return true;
     }
     
@@ -83,6 +80,12 @@ contract salaryDistribution {
         
         return employeeAccount[_account].accoutStatus;
     }
+
+    function updateWithdrawLimit(address _account, uint _amount) public isControlAccount returns(bool){
+        
+        employeeAccount[_account].withdrawLimit += _amount;
+        return true;
+    }
     
     
     function withdrawTo(address payable _account, uint _amount) public isWithdrawable(_account,_amount) returns(bool) {
@@ -90,7 +93,6 @@ contract salaryDistribution {
         employeeAccount[_account].withdrawLimit -= _amount;
         totalBalance -= _amount;
         _account.transfer(_amount);
-        
         return true;
     }
     
